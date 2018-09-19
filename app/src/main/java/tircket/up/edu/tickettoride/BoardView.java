@@ -29,14 +29,14 @@ public class BoardView extends SurfaceView{
 
     @Override
     protected void onDraw(Canvas canvas) {
-        src.top = 0;
-        src.left = 0;
+        src.top = 20;
+        src.left = 20;
         src.bottom = bmp.getHeight();
-        src.right = bmp.getHeight();
+        src.right = bmp.getWidth()-20;
         dest.top = 0;
         dest.left = 0;
-        dest.bottom = size.y-1;
-        dest.right = size.x-1;
+        dest.bottom = size.y;
+        dest.right = size.x;
         canvas.drawBitmap(bmp, src, dest, null);
     }
 }
