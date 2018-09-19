@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <SurfaceView
-        android:id="@+id/surfaceView"
+    <tircket.up.edu.tickettoride.BoardView
+        android:id="@+id/boardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>
