@@ -13,6 +13,6 @@ public class MainActivity extends AppCompatActivity {
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
         boardView = findViewById(R.id.boardView);
-        boardView.setSize(point);
+        boardView.setScreen(point);
     }
 }
