@@ -13,6 +13,7 @@ public class BoardView extends SurfaceView{
     private Bitmap board, blackTrain, blueTrain, greenTrain, orangeTrain, purpleTrain, rainbowTrain, redTrain, whiteTrain, yellowTrain;
     Rect boardSrc = new Rect();
     Rect boardDest = new Rect();
+    Rect trainDraw = new Rect();
     Rect card1 = new Rect();
     Rect card2 = new Rect();
     Rect card3 = new Rect();
@@ -21,6 +22,7 @@ public class BoardView extends SurfaceView{
     Rect cardSrc = new Rect();
     Context context;
     Point screen;
+    boolean init = false;
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
@@ -44,20 +46,10 @@ public class BoardView extends SurfaceView{
 
     @Override
     protected void onDraw(Canvas canvas) {
-        boardSrc.set(20, 20, board.getWidth()-20, board.getHeight());//part of bitmap we want to use
-        boardDest.set(0, 0, screen.x, screen.y);//part of the screen we want to project to
-        cardSrc.set(0, 0, blackTrain.getWidth(), blackTrain.getHeight());//all cards are the same size
-        int left = 0;
-        int top = screen.y/2-150;
-        int bottom = screen.y/2+150;
-        int right = (int)(left+(bottom-top)*1.5);//keep 2:1 aspect ratio
-        int space = (int)((left-right)*1.1);
-
-        card1.set(left, top, right, bottom);
-        card2.set(left-space, top, right-space, bottom);
-        card3.set(left-space*2, top, right-space*2, bottom);
-        card4.set(left-space*3, top, right-space*3, bottom);
-        card5.set(left-space*4, top, right-space*4, bottom);
+        if(!init) {
+            init();
+            init = true;
+        }
         canvas.drawBitmap(board, boardSrc, boardDest, null);//draw the board
         canvas.drawBitmap(blackTrain, cardSrc, card1, null);
         canvas.drawBitmap(blueTrain, cardSrc, card2, null);
@@ -66,8 +58,30 @@ public class BoardView extends SurfaceView{
         canvas.drawBitmap(yellowTrain, cardSrc, card5, null);
     }
 
+    private void init(){
+        boardSrc.set(20, 20, board.getWidth()-20, board.getHeight());//part of bitmap we want to use
+        boardDest.set(0, 0, (int)(screen.x*0.8), (int)(screen.y*0.8));//part of the screen we want to project to
+        cardSrc.set(0, 0, blackTrain.getWidth(), blackTrain.getHeight());//all cards are the same size
+        int left = 0;
+        int top = (int)(screen.y*0.8);
+        int bottom = screen.y;
+        int right = (int)(left+(bottom-top)/1.5);//keep 2:1 aspect ratio
+        int space = (int)((left-right)*1.1);
+
+        trainDraw.set(left, top, right, bottom);
+        card1.set(left-space, top, right-space, bottom);
+        card2.set(left-space*2, top, right-space*2, bottom);
+        card3.set(left-space*3, top, right-space*3, bottom);
+        card4.set(left-space*4, top, right-space*4, bottom);
+        card5.set(left-space*5, top, right-space*5, bottom);
+    }
+
     public void zoomBoard(float scaleFactor, int x, int y){
-        boardDest = calcScale(scaleFactor, x, y, boardSrc, boardDest, board);
+        if(scaleFactor < 1)
+            return;
+        if(scaleFactor > 3)
+            scaleFactor = 3;
+        boardSrc = calcScale(scaleFactor, x, y, boardSrc, boardDest, board);
         invalidate();
     }
 
