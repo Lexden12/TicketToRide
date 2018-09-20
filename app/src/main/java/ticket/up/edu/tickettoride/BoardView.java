@@ -4,13 +4,25 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
 public class BoardView extends SurfaceView{
-    private Bitmap board, blackTrain, blueTrain, greenTrain, orangeTrain, purpleTrain, rainbowTrain, redTrain, whiteTrain, yellowTrain;
+    private Bitmap board;
+    private Bitmap[] trainCards = {BitmapFactory.decodeResource(getResources(), R.drawable.black_card),
+            BitmapFactory.decodeResource(getResources(), R.drawable.blue_card),
+            BitmapFactory.decodeResource(getResources(), R.drawable.green_card),
+            BitmapFactory.decodeResource(getResources(), R.drawable.orange_card),
+            BitmapFactory.decodeResource(getResources(), R.drawable.purple_card),
+            BitmapFactory.decodeResource(getResources(), R.drawable.rainbow_card),
+            BitmapFactory.decodeResource(getResources(), R.drawable.red_card),
+            BitmapFactory.decodeResource(getResources(), R.drawable.white_card),
+            BitmapFactory.decodeResource(getResources(), R.drawable.yellow_card)};
+    Bitmap[] publicCards = new Bitmap[5];
     Rect boardSrc = new Rect();
     Rect boardDest = new Rect();
     Rect trainDraw = new Rect();
@@ -20,24 +32,18 @@ public class BoardView extends SurfaceView{
     Rect card4 = new Rect();
     Rect card5 = new Rect();
     Rect cardSrc = new Rect();
+    Rect[] buttons = new Rect[2];
     Context context;
     Point screen;
     boolean init = false;
+    Paint paint;
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
         board = BitmapFactory.decodeResource(getResources(), R.drawable.board);
-        blackTrain = BitmapFactory.decodeResource(getResources(), R.drawable.black_card);
-        blueTrain = BitmapFactory.decodeResource(getResources(), R.drawable.blue_card);
-        greenTrain = BitmapFactory.decodeResource(getResources(), R.drawable.green_card);
-        orangeTrain = BitmapFactory.decodeResource(getResources(), R.drawable.orange_card);
-        purpleTrain = BitmapFactory.decodeResource(getResources(), R.drawable.purple_card);
-        rainbowTrain = BitmapFactory.decodeResource(getResources(), R.drawable.rainbow_card);
-        redTrain = BitmapFactory.decodeResource(getResources(), R.drawable.red_card);
-        whiteTrain = BitmapFactory.decodeResource(getResources(), R.drawable.white_card);
-        yellowTrain = BitmapFactory.decodeResource(getResources(), R.drawable.yellow_card);
-        this.context = context;
 
+        this.context = context;
+        paint = new Paint();
     }
 
     public void setScreen(Point point){
@@ -51,22 +57,36 @@ public class BoardView extends SurfaceView{
             init = true;
         }
         canvas.drawBitmap(board, boardSrc, boardDest, null);//draw the board
-        canvas.drawBitmap(blackTrain, cardSrc, card1, null);
-        canvas.drawBitmap(blueTrain, cardSrc, card2, null);
-        canvas.drawBitmap(redTrain, cardSrc, card3, null);
-        canvas.drawBitmap(rainbowTrain, cardSrc, card4, null);
-        canvas.drawBitmap(yellowTrain, cardSrc, card5, null);
+
+        canvas.drawBitmap(publicCards[0], cardSrc, card1, null);
+        canvas.drawBitmap(publicCards[1], cardSrc, card2, null);
+        canvas.drawBitmap(publicCards[2], cardSrc, card3, null);
+        canvas.drawBitmap(publicCards[3], cardSrc, card4, null);
+        canvas.drawBitmap(publicCards[4], cardSrc, card5, null);
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRect(buttons[0], paint);
+        paint.setColor(Color.BLUE);
+        canvas.drawRect(buttons[1], paint);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(50);
+        canvas.drawText("Save & Exit", buttons[0].left, buttons[0].bottom*2/3, paint);
+        canvas.drawText("Help!", buttons[1].left+(buttons[1].right-buttons[1].left)/4, buttons[1].bottom*2/3, paint);
     }
 
     private void init(){
-        boardSrc.set(20, 20, board.getWidth()-20, board.getHeight());//part of bitmap we want to use
+        boardSrc.set(20, 20, board.getWidth()-20, board.getHeight()-20);//part of bitmap we want to use
         boardDest.set(0, 0, (int)(screen.x*0.8), (int)(screen.y*0.8));//part of the screen we want to project to
-        cardSrc.set(0, 0, blackTrain.getWidth(), blackTrain.getHeight());//all cards are the same size
+        cardSrc.set(0, 0, trainCards[0].getWidth(), trainCards[0].getHeight());//all cards are the same size
+        for(int i=0; i<5; i++){
+            publicCards[i] = trainCards[(int)(trainCards.length*Math.random())];
+        }
         int left = 0;
         int top = (int)(screen.y*0.8);
         int bottom = screen.y;
         int right = (int)(left+(bottom-top)/1.5);//keep 2:1 aspect ratio
         int space = (int)((left-right)*1.1);
+        //zoomBoard(2, boardDest.right, boardDest.bottom);
 
         trainDraw.set(left, top, right, bottom);
         card1.set(left-space, top, right-space, bottom);
@@ -74,6 +94,21 @@ public class BoardView extends SurfaceView{
         card3.set(left-space*3, top, right-space*3, bottom);
         card4.set(left-space*4, top, right-space*4, bottom);
         card5.set(left-space*5, top, right-space*5, bottom);
+        buttons[0] = new Rect();
+        buttons[0].set(boardDest.left, boardDest.top, boardDest.right/8, (int)(boardDest.top+(boardDest.right/8-boardDest.left)/2));
+        buttons[1] = new Rect();
+        buttons[1].set(boardDest.right*7/8, boardDest.top, boardDest.right, (int)(boardDest.top+(boardDest.right-boardDest.right*7/8)/2));
+    }
+
+    public Bitmap getBoard(){
+        return board;
+    }
+
+    public boolean setBoard(Bitmap newBoard){
+        if(board.getWidth() != newBoard.getWidth() || board.getHeight() != newBoard.getHeight())
+            return false;
+        board = newBoard;
+        return true;
     }
 
     public void zoomBoard(float scaleFactor, int x, int y){
