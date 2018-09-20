@@ -1,4 +1,4 @@
-package tircket.up.edu.tickettoride;
+package ticket.up.edu.tickettoride;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

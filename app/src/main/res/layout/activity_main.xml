@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <tircket.up.edu.tickettoride.BoardView
+    <ticket.up.edu.tickettoride.BoardView
         android:id="@+id/boardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

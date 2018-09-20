@@ -1,4 +1,4 @@
-package tircket.up.edu.tickettoride;
+package ticket.up.edu.tickettoride;
 
 import org.junit.Test;
 

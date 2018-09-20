@@ -1,4 +1,4 @@
-package tircket.up.edu.tickettoride;
+package ticket.up.edu.tickettoride;
 
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
