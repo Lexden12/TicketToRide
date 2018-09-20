@@ -4,8 +4,14 @@ import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     BoardView boardView;
+    TrainDeck trainDeck;
+    RouteDeck routeDeck;
+    ArrayList publicCards;
+    Player player;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,5 +29,14 @@ public class MainActivity extends AppCompatActivity {
          */
         boardView = findViewById(R.id.boardView);
         boardView.setScreen(point);
+        setBoard();
+    }
+
+    public void setBoard(){
+        trainDeck = new TrainDeck(this);
+        routeDeck = new RouteDeck();//RouteDeck is a stub
+        player = new Player("Lexden");
+        publicCards.addAll(trainDeck.draw(5));
+        //boardView.
     }
 }

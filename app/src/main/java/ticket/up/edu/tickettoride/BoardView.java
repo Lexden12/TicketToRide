@@ -11,27 +11,13 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+
 public class BoardView extends SurfaceView{
     private Bitmap board;
-    private Bitmap[] trainCards = {BitmapFactory.decodeResource(getResources(), R.drawable.black_card),
-            BitmapFactory.decodeResource(getResources(), R.drawable.blue_card),
-            BitmapFactory.decodeResource(getResources(), R.drawable.green_card),
-            BitmapFactory.decodeResource(getResources(), R.drawable.orange_card),
-            BitmapFactory.decodeResource(getResources(), R.drawable.purple_card),
-            BitmapFactory.decodeResource(getResources(), R.drawable.rainbow_card),
-            BitmapFactory.decodeResource(getResources(), R.drawable.red_card),
-            BitmapFactory.decodeResource(getResources(), R.drawable.white_card),
-            BitmapFactory.decodeResource(getResources(), R.drawable.yellow_card)};
-    Bitmap[] publicCards = new Bitmap[5];
     Rect boardSrc = new Rect();
     Rect boardDest = new Rect();
     Rect trainDraw = new Rect();
-    Rect card1 = new Rect();
-    Rect card2 = new Rect();
-    Rect card3 = new Rect();
-    Rect card4 = new Rect();
-    Rect card5 = new Rect();
-    Rect cardSrc = new Rect();
     Rect[] buttons = new Rect[2];
     Context context;
     Point screen;
