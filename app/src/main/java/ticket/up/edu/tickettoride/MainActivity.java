@@ -50,6 +50,5 @@ public class MainActivity extends AppCompatActivity {
         }
         boardView.setPublicCards(publicCards);
         boardView.setPlayer(player);
-        boardView.setPublicCards(publicCards);
     }
 }

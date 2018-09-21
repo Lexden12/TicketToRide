@@ -17,9 +17,9 @@ public class TrainDeck extends Deck {
                 new Card(BitmapFactory.decodeResource(context.getResources(), R.drawable.rainbow_card), "Rainbow Train")};
         for(int i = 0; i < 8; i++)
             for (int j = 0; j < 12; j++)
-                cards.add(trainCards[i]);//add the regular cards
+                cards.add(new Card(trainCards[i]));//add the regular cards
         for (int i = 0; i < 14; i++)
-            cards.add(trainCards[8]);//add the rainbow cards
+            cards.add(new Card(trainCards[8]));//add the rainbow cards
         shuffle();
     }
 }
