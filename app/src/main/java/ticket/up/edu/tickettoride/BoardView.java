@@ -68,6 +68,8 @@ public class BoardView extends SurfaceView{
         paint.setTextSize(50);
         canvas.drawText("Save & Exit", buttons[0].left, buttons[0].bottom*2/3, paint);
         canvas.drawText("Help!", buttons[1].left+(buttons[1].right-buttons[1].left)/4, buttons[1].bottom*2/3, paint);
+        paint.setTextSize(75);
+        canvas.drawText("Turn: "+player.getUsername(), boardDest.right/2-100, 75, paint);
     }
 
     private void init(){
@@ -89,6 +91,7 @@ public class BoardView extends SurfaceView{
         if(board.getWidth() != newBoard.getWidth() || board.getHeight() != newBoard.getHeight())
             return false;
         board = newBoard;
+        invalidate();
         return true;
     }
 

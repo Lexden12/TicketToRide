@@ -12,6 +12,22 @@ public class Hand {
         routeCards = new ArrayList<>();
     }
 
+    public ArrayList<Card> getRouteCards() {
+        return routeCards;
+    }
+
+    public ArrayList<Card> getTrainCards() {
+        return trainCards;
+    }
+
+    public void setRouteCards(ArrayList<Card> routeCards) {
+        this.routeCards = routeCards;
+    }
+
+    public void setTrainCards(ArrayList<Card> trainCards) {
+        this.trainCards = trainCards;
+    }
+
     public void addTrainCards(ArrayList<Card> cards){
         trainCards.addAll(cards);
     }
@@ -40,10 +56,33 @@ public class Hand {
         return discards;
     }
 
-    public void sort(){
+    public void sort() {
         /**
          * TO-DO: Sort cards in arraylist
          */
+        for(int i = 0; i < trainCards.size(); i++){
+            int index = minIndex(trainCards, i);
+            if(index != i)
+                swap(trainCards, i, index);
+        }
+    }
+
+    private int minIndex(ArrayList<Card> cards, int l){
+        String min = cards.get(l).getName();
+        int index = l;
+        for(int i = l; i < cards.size(); i++){
+            if(min.compareTo(cards.get(i).getName()) < 0){
+                min = cards.get(i).getName();
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    private void swap(ArrayList<Card> cards, int index1, int index2){
+        Card c = cards.get(index1);
+        cards.set(index1, cards.get(index2));
+        cards.set(index2, c);
     }
 
     public void draw(Canvas c){

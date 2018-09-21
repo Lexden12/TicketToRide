@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
          Solution: I used the example code from this
          post.
          */
+        screen.y -= 50;
         boardView = findViewById(R.id.boardView);
         boardView.setScreen(screen);
         setBoard();
@@ -36,10 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void setBoard(){
         trainDeck = new TrainDeck(this);
-        routeDeck = new RouteDeck();//RouteDeck is a stub
+        routeDeck = new RouteDeck(this);//RouteDeck is a stub
         player = new Player("Lexden");
         publicCards.addAll(trainDeck.draw(5));
-        player.giveTrainCards(trainDeck.draw(5));
+        player.giveTrainCards(trainDeck.draw(10));
+        player.getHand().sort();
         int left = 0;
         int top = (int)(screen.y*0.8);
         int bottom = screen.y;
@@ -49,6 +51,20 @@ public class MainActivity extends AppCompatActivity {
             publicCards.get(i).setDest(new Rect(left + space*(i+1), top, right + space*(i+1), bottom));
         }
         boardView.setPublicCards(publicCards);
+        arrangeHand(player.getHand().getTrainCards().size());
         boardView.setPlayer(player);
+    }
+
+    public void arrangeHand(int numCards){
+        int left = (int)(screen.x*0.8);
+        int top = 0;
+        int bottom = (int)(screen.y*0.2);
+        int right = (int)(left+(bottom-top)/1.5);
+        int space = (screen.y-(bottom - top)*2/3)/numCards;
+        ArrayList<Card> cards = player.getHand().getTrainCards();
+        for(int i = 0; i < numCards; i++){
+            cards.get(i).setDest(new Rect(left, top + space*i, right, bottom + space*i));
+        }
+        player.getHand().setTrainCards(cards);
     }
 }

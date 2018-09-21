@@ -16,6 +16,14 @@ public class Player {
         hand.addTrainCards(cards);
     }
 
+    public Hand getHand() {
+        return hand;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
     public void draw(Canvas c){
         hand.draw(c);
     }
