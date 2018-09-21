@@ -5,8 +5,8 @@ import android.graphics.Canvas;
 import java.util.ArrayList;
 
 public abstract class Deck {
-    protected ArrayList<Card> cards;
-    protected ArrayList<Card> discard;
+    protected ArrayList<Card> cards = new ArrayList<>();
+    protected ArrayList<Card> discard = new ArrayList<>();
 
     public void shuffle(){
         for(int i=0; i<cards.size()-1; i++){

@@ -17,8 +17,9 @@ public class BoardView extends SurfaceView{
     private Bitmap board;
     Rect boardSrc = new Rect();
     Rect boardDest = new Rect();
-    Rect trainDraw = new Rect();
     Rect[] buttons = new Rect[2];
+    Player player;
+    ArrayList<Card> publicCards = new ArrayList<>();
     Context context;
     Point screen;
     boolean init = false;
@@ -30,6 +31,16 @@ public class BoardView extends SurfaceView{
 
         this.context = context;
         paint = new Paint();
+    }
+
+    public void setPlayer(Player p){
+        player = p;
+        invalidate();
+    }
+
+    public void setPublicCards(ArrayList<Card> cards){
+        publicCards = cards;
+        invalidate();
     }
 
     public void setScreen(Point point){
@@ -44,11 +55,10 @@ public class BoardView extends SurfaceView{
         }
         canvas.drawBitmap(board, boardSrc, boardDest, null);//draw the board
 
-        canvas.drawBitmap(publicCards[0], cardSrc, card1, null);
-        canvas.drawBitmap(publicCards[1], cardSrc, card2, null);
-        canvas.drawBitmap(publicCards[2], cardSrc, card3, null);
-        canvas.drawBitmap(publicCards[3], cardSrc, card4, null);
-        canvas.drawBitmap(publicCards[4], cardSrc, card5, null);
+        player.draw(canvas);
+        for (Card card:publicCards) {
+            card.draw(canvas);
+        }
         paint.setColor(Color.RED);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRect(buttons[0], paint);
@@ -63,23 +73,8 @@ public class BoardView extends SurfaceView{
     private void init(){
         boardSrc.set(20, 20, board.getWidth()-20, board.getHeight()-20);//part of bitmap we want to use
         boardDest.set(0, 0, (int)(screen.x*0.8), (int)(screen.y*0.8));//part of the screen we want to project to
-        cardSrc.set(0, 0, trainCards[0].getWidth(), trainCards[0].getHeight());//all cards are the same size
-        for(int i=0; i<5; i++){
-            publicCards[i] = trainCards[(int)(trainCards.length*Math.random())];
-        }
-        int left = 0;
-        int top = (int)(screen.y*0.8);
-        int bottom = screen.y;
-        int right = (int)(left+(bottom-top)/1.5);//keep 2:1 aspect ratio
-        int space = (int)((left-right)*1.1);
-        //zoomBoard(2, boardDest.right, boardDest.bottom);
 
-        trainDraw.set(left, top, right, bottom);
-        card1.set(left-space, top, right-space, bottom);
-        card2.set(left-space*2, top, right-space*2, bottom);
-        card3.set(left-space*3, top, right-space*3, bottom);
-        card4.set(left-space*4, top, right-space*4, bottom);
-        card5.set(left-space*5, top, right-space*5, bottom);
+        //zoomBoard(2, boardDest.right, boardDest.bottom);
         buttons[0] = new Rect();
         buttons[0].set(boardDest.left, boardDest.top, boardDest.right/8, (int)(boardDest.top+(boardDest.right/8-boardDest.left)/2));
         buttons[1] = new Rect();

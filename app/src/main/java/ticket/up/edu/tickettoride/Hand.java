@@ -5,22 +5,23 @@ import android.graphics.Canvas;
 import java.util.ArrayList;
 
 public class Hand {
-    private ArrayList<TrainCard> trainCards;
-    private ArrayList<RouteCard> routeCards;
+    private ArrayList<Card> trainCards;
+    private ArrayList<Card> routeCards;
     public Hand(){
         trainCards = new ArrayList<>();
+        routeCards = new ArrayList<>();
     }
 
-    public void addTrainCards(ArrayList<TrainCard> cards){
+    public void addTrainCards(ArrayList<Card> cards){
         trainCards.addAll(cards);
     }
 
-    public void addRouteCards(ArrayList<RouteCard> cards){
+    public void addRouteCards(ArrayList<Card> cards){
         routeCards.addAll(cards);
     }
 
-    public ArrayList<TrainCard> discard(String name, int count) {
-        ArrayList<TrainCard> discards = new ArrayList<>();
+    public ArrayList<Card> discard(String name, int count) {
+        ArrayList<Card> discards = new ArrayList<>();
         for(int i = 0; i < count; i++) {
             boolean hasCard = false;
             for (int j = 0; j < trainCards.size(); j++) {

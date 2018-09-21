@@ -2,6 +2,8 @@ package ticket.up.edu.tickettoride;
 
 import android.graphics.Canvas;
 
+import java.util.ArrayList;
+
 public class Player {
     private Hand hand;
     private String username;
@@ -10,7 +12,11 @@ public class Player {
         hand = new Hand();
     }
 
-    public void draw(Canvas c){
+    public void giveTrainCards(ArrayList<Card> cards){
+        hand.addTrainCards(cards);
+    }
 
+    public void draw(Canvas c){
+        hand.draw(c);
     }
 }
