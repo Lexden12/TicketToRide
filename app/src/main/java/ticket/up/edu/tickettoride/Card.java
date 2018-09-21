@@ -17,6 +17,13 @@ public class Card {
         src = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    public Card(Card c){
+        this.img = c.img;
+        this.name = c.name;
+        this.dest = c.dest;
+        src = new Rect(0, 0, img.getWidth(), img.getHeight());
+    }
+
     public String getName() {
         return name;
     }
