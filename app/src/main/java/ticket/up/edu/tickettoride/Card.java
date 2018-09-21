@@ -10,6 +10,11 @@ public class Card {
     private Rect src;
     private Rect dest;
 
+    /**
+     * Construct a new Card from scratch
+     * @param bmp the bitmap to be used to draw the card on the board
+     * @param name the name of the card to be used when comparing cards
+     */
     public Card(Bitmap bmp, String name){
         img = bmp;
         this.name = name;
@@ -17,6 +22,10 @@ public class Card {
         src = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    /**
+     * Construct a new card by using an existing card
+     * @param c the card whose instance variables we will copy from
+     */
     public Card(Card c){
         this.img = c.img;
         this.name = c.name;
@@ -32,6 +41,10 @@ public class Card {
         this.dest = dest;
     }
 
+    /**
+     * draw this card on the given canvas
+     * @param c the canvas on which to draw this card
+     */
     public void draw(Canvas c){
         c.drawBitmap(img, src, dest, null);
     }

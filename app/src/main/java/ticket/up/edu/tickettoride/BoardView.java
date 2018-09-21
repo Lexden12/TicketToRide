@@ -24,6 +24,7 @@ public class BoardView extends SurfaceView{
     Point screen;
     boolean init = false;
     Paint paint;
+
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
@@ -33,32 +34,52 @@ public class BoardView extends SurfaceView{
         paint = new Paint();
     }
 
+    /**
+     * the player on this tablet (used to pass in the player's cards to be drawn)
+     * @param p player received from the activity
+     */
     public void setPlayer(Player p){
         player = p;
         invalidate();
     }
 
+    /**
+     * set the five cards that are face up that can be drawn by the player
+     * @param cards the cards that are face up
+     */
     public void setPublicCards(ArrayList<Card> cards){
         publicCards = cards;
         invalidate();
     }
 
+    /**
+     * used to pass in the screen dimensions of the device
+     * @param point point containing the coordinates of the bottom right corner of the screen
+     */
     public void setScreen(Point point){
         screen = point;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        //method to initialize the rects used for the board and buttons
         if(!init) {
             init();
             init = true;
         }
+
+        //draw the board
         canvas.drawBitmap(board, boardSrc, boardDest, null);//draw the board
 
+        //draw the player's hand
         player.draw(canvas);
+
+        //draw the face up cards
         for (Card card:publicCards) {
             card.draw(canvas);
         }
+
+        //draw the buttons
         paint.setColor(Color.RED);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRect(buttons[0], paint);
@@ -69,9 +90,14 @@ public class BoardView extends SurfaceView{
         canvas.drawText("Save & Exit", buttons[0].left, buttons[0].bottom*2/3, paint);
         canvas.drawText("Help!", buttons[1].left+(buttons[1].right-buttons[1].left)/4, buttons[1].bottom*2/3, paint);
         paint.setTextSize(75);
+
+        //write whose turn it is
         canvas.drawText("Turn: "+player.getUsername(), boardDest.right/2-100, 75, paint);
     }
 
+    /**
+     * prepares the board and buttons to be drawn
+     */
     private void init(){
         boardSrc.set(20, 20, board.getWidth()-20, board.getHeight()-20);//part of bitmap we want to use
         boardDest.set(0, 0, (int)(screen.x*0.8), (int)(screen.y*0.8));//part of the screen we want to project to
@@ -87,6 +113,12 @@ public class BoardView extends SurfaceView{
         return board;
     }
 
+    /**
+     * set the board to the given bitmap (planned for use with updating the board when routes are claimed)
+     * @param newBoard the new bitmap of the board to display
+     * @return whether the board was successfully overwritten (will return false if the new board
+     *          is not the same dimensions as the old board
+     */
     public boolean setBoard(Bitmap newBoard){
         if(board.getWidth() != newBoard.getWidth() || board.getHeight() != newBoard.getHeight())
             return false;
@@ -95,6 +127,12 @@ public class BoardView extends SurfaceView{
         return true;
     }
 
+    /**
+     * publically used to zoom in on the board
+     * @param scaleFactor the amount to zoom in by
+     * @param x the x coordinate of the center of the zoom
+     * @param y the y coordinate of the center of the zoom
+     */
     public void zoomBoard(float scaleFactor, int x, int y){
         if(scaleFactor < 1)
             return;
@@ -104,6 +142,16 @@ public class BoardView extends SurfaceView{
         invalidate();
     }
 
+    /**
+     * used to calculate the new "source rect" for the board in order to zoom properly
+     * @param scaleFactor the amount to zoom in by
+     * @param x the x coordinate of the center of the zoom
+     * @param y the y coordinate of the center of the zoom
+     * @param src the rect representing the area of the bitmap to be drawn
+     * @param dest the rect representing the area on the screen on which the bitmap will be drawn
+     * @param bmp the bitmap which is being zoomed in on
+     * @return the new source rect to be used which is zoomed
+     */
     private Rect calcScale(float scaleFactor, int x, int y, Rect src, Rect dest, Bitmap bmp){
         double percentX = (double)x/(double)dest.width();//percent of way across screen
         double percentY = (double)y/(double)dest.height();

@@ -5,6 +5,10 @@ import android.graphics.BitmapFactory;
 
 public class TrainDeck extends Deck {
 
+    /**
+     * create a new Train Card Deck with the proper amounts of each type of card
+     * @param context activity which gives us a context for our resources
+     */
     public TrainDeck(Context context){
         Card[] trainCards = {new Card(BitmapFactory.decodeResource(context.getResources(), R.drawable.black_card), "Black Train"),
                 new Card(BitmapFactory.decodeResource(context.getResources(), R.drawable.blue_card), "Blue Train"),
